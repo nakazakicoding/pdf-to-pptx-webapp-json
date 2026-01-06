@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF to PPTX · JSON Mode</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="app-container">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="logo">
+                    <span class="logo-text">PDF → PPTX</span>
+                    <span class="mode-badge">JSON Mode</span>
+                </div>
+                <p class="tagline">Upload PDF + JSON for Direct Conversion</p>
+            </header>
+
+            <!-- Upload Section -->
+            <section id="upload-section" class="card upload-card">
+                <!-- PDF Upload Zone -->
+                <div class="upload-zone" id="pdf-upload-zone">
+                    <div class="upload-icon-container">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                    <h2 class="upload-title">Drop PDF here</h2>
+                    <p class="upload-subtitle">or click to browse</p>
+                    <input type="file" id="pdf-file-input" accept=".pdf" hidden>
+                </div>
+
+                <div id="pdf-file-info" class="file-info hidden">
+                    <svg class="file-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                    </svg>
+                    <span id="pdf-file-name" class="file-name"></span>
+                    <button id="remove-pdf-file" class="remove-file-btn" title="Remove">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- JSON Upload Zone -->
+                <div class="upload-zone json-zone hidden" id="json-upload-zone">
+                    <div class="upload-icon-container">
+                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <path d="M4 7l2-2 2 2"></path>
+                            <path d="M6 5v8c0 1.5 1 2 2 2h3"></path>
+                            <path d="M20 17l-2 2-2-2"></path>
+                            <path d="M18 19v-8c0-1.5-1-2-2-2h-3"></path>
+                        </svg>
+                    </div>
+                    <h2 class="upload-title">Drop JSON here</h2>
+                    <p class="upload-subtitle">image_analysis.json</p>
+                    <input type="file" id="json-file-input" accept=".json" hidden>
+                </div>
+
+                <div id="json-file-info" class="file-info hidden">
+                    <svg class="file-icon json-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="1.5">
+                        <path d="M4 7l2-2 2 2"></path>
+                        <path d="M6 5v8c0 1.5 1 2 2 2h3"></path>
+                        <path d="M20 17l-2 2-2-2"></path>
+                        <path d="M18 19v-8c0-1.5-1-2-2-2h-3"></path>
+                    </svg>
+                    <span id="json-file-name" class="file-name"></span>
+                    <button id="remove-json-file" class="remove-file-btn" title="Remove">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Conversion Mode Selector -->
+                <div id="mode-selector" class="mode-selector hidden">
+                    <p class="mode-label">Conversion Mode</p>
+                    <div class="mode-options">
+                        <label class="mode-option">
+                            <input type="radio" name="conversion-mode" value="precision" checked>
+                            <div class="mode-card">
+                                <div class="mode-icon">⚡</div>
+                                <div class="mode-info">
+                                    <span class="mode-name">Precision Mode</span>
+                                    <span class="mode-desc">Optimized for accuracy. Smaller file size.</span>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="mode-option">
+                            <input type="radio" name="conversion-mode" value="safeguard">
+                            <div class="mode-card">
+                                <div class="mode-icon">🛡️</div>
+                                <div class="mode-info">
+                                    <span class="mode-name">Safeguard Mode</span>
+                                    <span class="mode-desc">Includes original image backup layer.</span>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <button id="convert-btn" class="convert-btn hidden">
+                    <span class="btn-text">Convert to PowerPoint</span>
+                    <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </section>
+
+            <!-- Processing Section -->
+            <section id="processing-section" class="card processing-card hidden">
+                <div class="processing-visual">
+                    <div class="pulse-ring"></div>
+                    <div class="processing-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                        </svg>
+                    </div>
+                </div>
+                <h2 class="processing-title" id="processing-title">Processing...</h2>
+                <p class="processing-message" id="processing-message">Initializing...</p>
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <span class="progress-text" id="progress-text">0%</span>
+                </div>
+                <div class="processing-steps">
+                    <div class="step" id="step-upload">
+                        <div class="step-dot"></div>
+                        <span class="step-text">Upload</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step" id="step-generate">
+                        <div class="step-dot"></div>
+                        <span class="step-text">Generate</span>
+                    </div>
+                    <div class="step-line"></div>
+                    <div class="step" id="step-complete">
+                        <div class="step-dot"></div>
+                        <span class="step-text">Done</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Result Section -->
+            <section id="result-section" class="card result-card hidden">
+                <div class="result-icon-container">
+                    <svg class="result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </div>
+                <h2 class="result-title">Conversion Complete</h2>
+                <p class="result-subtitle" id="result-filename"></p>
+                <button id="download-btn" class="download-btn">
+                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    <span>Download</span>
+                </button>
+                <button id="new-convert-btn" class="new-convert-btn">
+                    Convert Another
+                </button>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>No API Required - Direct Conversion</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
