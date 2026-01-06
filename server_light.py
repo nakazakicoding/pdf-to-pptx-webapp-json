@@ -187,14 +187,14 @@ async def process_pdf_with_json(job_id: str):
         output_filename = Path(job["original_filename"]).stem + ".pptx"
         output_path = OUTPUT_DIR / f"{job_id}_{output_filename}"
         
-        # Select converter based on mode - LIGHTWEIGHT versions
+        # Select converter based on mode - LIGHTWEIGHT 2x versions (full quality + page cleanup)
         mode = job.get("mode", "precision")
         if mode == "safeguard":
-            converter_script = BASE_DIR / "standalone_convert_v4_v43_light.py"
-            print(f"Using Safeguard Mode converter (v43 LIGHT)")
+            converter_script = BASE_DIR / "standalone_convert_v4_v43_light_2x.py"
+            print(f"Using Safeguard Mode converter (v43 LIGHT 2x)")
         else:
-            converter_script = BASE_DIR / "standalone_convert_v43_light.py"
-            print(f"Using Precision Mode converter (v43 LIGHT)")
+            converter_script = BASE_DIR / "standalone_convert_v43_light_2x.py"
+            print(f"Using Precision Mode converter (v43 LIGHT 2x)")
         
         log_path = job_dir / "conversion_log.txt"
         
